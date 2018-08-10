@@ -68,7 +68,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 Scopes = x.Scopes?.ToList()?.Select(y => new Scope(y)).ToList()
             }).ToList();
 
+            services.TryAddTransient<ISignInService, OpenIdAuthoritySignInService>();
+
             services.AddPasswordlessLogin(configuration, env);
+
+            services.AddEmbeddedViews();
 
             services.AddIdentityServer(options =>
             {

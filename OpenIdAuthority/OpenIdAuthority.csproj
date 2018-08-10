@@ -42,6 +42,9 @@
     <None Remove="UI\Shared\_MainMenu.cshtml" />
     <None Remove="UI\Shared\_PostRedirectMessages.cshtml" />
     <None Remove="UI\Shared\_SignInFallback.cshtml" />
+    <None Remove="UI\_ViewStart.cshtml" />
+    <None Remove="wwwroot\setpassword.js" />
+    <None Remove="wwwroot\timezonize.js" />
     <None Remove="yarn.lock" />
   </ItemGroup>
 

@@ -1,16 +1,16 @@
 ﻿// Copyright (c) Ryan Foster. All rights reserved. 
 // Licensed under the Apache License, Version 2.0.
 
-using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.Extensions.Logging;
-using SimpleIAM.OpenIdAuthority.Stores;
+using SimpleIAM.OpenIdAuthority;
+using SimpleIAM.PasswordlessLogin.Stores;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace SimpleIAM.OpenIdAuthority.Services
+namespace SimpleIAM.PasswordlessLogin.Services
 {
     public class ProfileService : IProfileService
     {

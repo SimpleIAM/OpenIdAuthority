@@ -2,9 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.FileProviders;
 using System;
-using System.Reflection;
 using Microsoft.AspNetCore.HttpOverrides;
 using SimpleIAM.OpenIdAuthority.Configuration;
 using System.Linq;
@@ -18,6 +16,10 @@ namespace Microsoft.AspNetCore.Builder
             if (app == null)
             {
                 throw new ArgumentNullException(nameof(app));
+            }
+            if (env == null)
+            {
+                throw new ArgumentNullException(nameof(env));
             }
 
             hostingConfig = hostingConfig ?? new HostingConfig();
@@ -83,16 +85,7 @@ namespace Microsoft.AspNetCore.Builder
                 app.UseMiddleware<SimpleIAM.OpenIdAuthority.Extensions.CspHeaderOverridesMiddleware>();
             }
 
-            var compositeFileProvider = new CompositeFileProvider(
-                new EmbeddedFileProvider(typeof(OpenIdAuthorityApplicationBuilderExtensions).GetTypeInfo().Assembly, "SimpleIAM.OpenIdAuthority.wwwroot"),
-                env.WebRootFileProvider
-            );
-            env.WebRootFileProvider = compositeFileProvider;
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = compositeFileProvider
-            });
+            app.UsePasswordlessLogin(env.WebRootFileProvider);
 
             app.UseIdentityServer();
 

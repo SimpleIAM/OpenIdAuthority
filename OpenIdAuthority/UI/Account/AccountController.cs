@@ -3,18 +3,17 @@
 
 using System;
 using System.Threading.Tasks;
-using IdentityServer4.Extensions;
-using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SimpleIAM.OpenIdAuthority.Configuration;
-using SimpleIAM.OpenIdAuthority.Services.Email;
-using SimpleIAM.OpenIdAuthority.Services.Message;
-using SimpleIAM.OpenIdAuthority.Services.OTC;
-using SimpleIAM.OpenIdAuthority.Services.Password;
-using SimpleIAM.OpenIdAuthority.Stores;
+using SimpleIAM.PasswordlessLogin.Services.Email;
+using SimpleIAM.PasswordlessLogin.Services.Message;
+using SimpleIAM.PasswordlessLogin.Services.OTC;
+using SimpleIAM.PasswordlessLogin.Services.Password;
+using SimpleIAM.PasswordlessLogin.Stores;
 using SimpleIAM.OpenIdAuthority.UI.Account;
 using SimpleIAM.OpenIdAuthority.UI.Shared;
+using SimpleIAM.PasswordlessLogin.Configuration;
+using SimpleIAM.PasswordlessLogin;
 
 namespace SimpleIAM.OpenIdAuthority.UI.Authenticate
 {
@@ -22,7 +21,6 @@ namespace SimpleIAM.OpenIdAuthority.UI.Authenticate
     [Authorize]
     public class AccountController : BaseController
     {
-        private readonly IIdentityServerInteractionService _interaction;
         private readonly IEmailTemplateService _emailTemplateService;
         private readonly IUserStore _userStore;
         private readonly IPasswordService _passwordService;
@@ -31,7 +29,6 @@ namespace SimpleIAM.OpenIdAuthority.UI.Authenticate
         private readonly IdProviderConfig _config;
 
         public AccountController(
-            IIdentityServerInteractionService interaction,
             IEmailTemplateService emailTemplateService,
             IUserStore userStore,
             IPasswordService passwordService,
@@ -39,7 +36,6 @@ namespace SimpleIAM.OpenIdAuthority.UI.Authenticate
             IMessageService messageService,
             IdProviderConfig config)
         {
-            _interaction = interaction;
             _emailTemplateService = emailTemplateService;
             _userStore = userStore;
             _passwordService = passwordService;

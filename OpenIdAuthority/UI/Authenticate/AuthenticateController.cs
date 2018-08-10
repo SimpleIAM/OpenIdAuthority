@@ -11,8 +11,8 @@ using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SimpleIAM.OpenIdAuthority.Orchestrators;
-using SimpleIAM.OpenIdAuthority.Services.OTC;
+using SimpleIAM.PasswordlessLogin.Orchestrators;
+using SimpleIAM.PasswordlessLogin.Services.OTC;
 using SimpleIAM.OpenIdAuthority.UI.Shared;
 
 namespace SimpleIAM.OpenIdAuthority.UI.Authenticate

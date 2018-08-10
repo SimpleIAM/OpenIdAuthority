@@ -4,7 +4,7 @@
 using System.Collections.Generic;
 using SimpleIAM.OpenIdAuthority.Models;
 
-namespace SimpleIAM.OpenIdAuthority.Stores
+namespace SimpleIAM.PasswordlessLogin.Stores
 {
     public class InMemoryAppStore : IAppStore
     {

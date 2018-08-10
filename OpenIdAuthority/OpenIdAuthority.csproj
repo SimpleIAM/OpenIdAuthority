@@ -25,7 +25,6 @@
   <ItemGroup>
     <EmbeddedResource Include="**\*.cshtml" />
     <EmbeddedResource Include="wwwroot\**" />
-    <EmbeddedResource Include="EmailTemplates\*.html" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,10 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="EmailTemplates\AccountNotFound.html" />
-    <None Remove="EmailTemplates\OneTimeCode.html" />
-    <None Remove="EmailTemplates\PasswordReset.html" />
-    <None Remove="EmailTemplates\SignInWithEmail.html" />
     <None Remove="UI\Account\GetOneTimeCode.cshtml" />
     <None Remove="UI\Account\RemovePassword.cshtml" />
     <None Remove="UI\Account\SetPassword.cshtml" />
@@ -47,8 +42,6 @@
     <None Remove="UI\Shared\_MainMenu.cshtml" />
     <None Remove="UI\Shared\_PostRedirectMessages.cshtml" />
     <None Remove="UI\Shared\_SignInFallback.cshtml" />
-    <None Remove="wwwroot\setpassword.js" />
-    <None Remove="wwwroot\timezonize.js" />
     <None Remove="yarn.lock" />
   </ItemGroup>
 
@@ -71,6 +64,10 @@
 
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\PasswordlessLogin\PasswordlessLogin\PasswordlessLogin.csproj" />
   </ItemGroup>
 
 </Project>

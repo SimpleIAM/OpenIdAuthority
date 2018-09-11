@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using SimpleIAM.OpenIdAuthority;
 using SimpleIAM.OpenIdAuthority.Configuration;
+using SimpleIAM.OpenIdAuthority.Services;
+using SimpleIAM.PasswordlessLogin;
 using SimpleIAM.PasswordlessLogin.Configuration;
 using SimpleIAM.PasswordlessLogin.Services;
 using SimpleIAM.PasswordlessLogin.Stores;
@@ -38,7 +40,7 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             var idProviderConfig = new IdProviderConfig();
-            configuration.Bind(OpenIdAuthorityConstants.ConfigurationSections.IdProvider, idProviderConfig);
+            configuration.Bind(PasswordlessLoginConstants.ConfigurationSections.IdProvider, idProviderConfig);
             services.AddSingleton(idProviderConfig);
 
             var hostingConfig = new HostingConfig();
@@ -70,16 +72,17 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.TryAddTransient<ISignInService, OpenIdAuthoritySignInService>();
 
-            services.AddPasswordlessLogin(configuration, env);
+            var passwordlessApiAllowedOrigins = clients.SelectMany(x => x.AllowedCorsOrigins).Distinct().ToArray();
+            services.AddPasswordlessLogin(configuration, env, passwordlessApiAllowedOrigins);
 
             services.AddEmbeddedViews();
 
             services.AddIdentityServer(options =>
             {
-                options.UserInteraction.LoginUrl = OpenIdAuthorityConstants.Configuration.LoginUrl;
-                options.UserInteraction.LogoutUrl = OpenIdAuthorityConstants.Configuration.LogoutUrl;
+                options.UserInteraction.LoginUrl = idProviderConfig.Urls.SignIn;
+                options.UserInteraction.LogoutUrl = idProviderConfig.Urls.SignOut;
                 options.UserInteraction.LogoutIdParameter = OpenIdAuthorityConstants.Configuration.LogoutIdParameter;
-                options.UserInteraction.ErrorUrl = OpenIdAuthorityConstants.Configuration.ErrorUrl;
+                options.UserInteraction.ErrorUrl = idProviderConfig.Urls.Error;
                 options.Authentication.CookieLifetime = TimeSpan.FromMinutes(idProviderConfig.DefaultSessionLengthMinutes);
             })
                 .AddDeveloperSigningCredential() //todo: replace
@@ -89,9 +92,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddInMemoryIdentityResources(idScopes);
 
             services.AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, ReconfigureCookieOptions>();
-
-            var allowedOrigins = clients.SelectMany(x => x.AllowedCorsOrigins).Distinct().ToArray();
-            services.AddCustomCorsPolicy(allowedOrigins);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 

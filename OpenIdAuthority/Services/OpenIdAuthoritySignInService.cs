@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityServer4.Events;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
+using SimpleIAM.PasswordlessLogin;
 using SimpleIAM.PasswordlessLogin.Services;
 
-namespace SimpleIAM.PasswordlessLogin.Services
+namespace SimpleIAM.OpenIdAuthority.Services
 {
     public class OpenIdAuthoritySignInService : ISignInService
     {
@@ -26,10 +28,16 @@ namespace SimpleIAM.PasswordlessLogin.Services
             await _httpContext.SignInAsync(subjectId, username, authProps);
         }
 
-        public async Task SignOutAsync(string subjectId, string username)
+        public async Task SignOutAsync()
         {
             await _httpContext.SignOutAsync();
-            await _events.RaiseAsync(new UserLogoutSuccessEvent(subjectId, username));
+            await _events.RaiseAsync(new UserLogoutSuccessEvent(
+                _httpContext.User.GetSubjectId(), 
+                _httpContext.User.GetDisplayName()
+                ));
+
+            // We're signed out now, so the UI for this request should show an anonymous user
+            _httpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
         }
     }
 }

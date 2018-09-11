@@ -5,12 +5,13 @@ using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.Extensions.Logging;
 using SimpleIAM.OpenIdAuthority;
+using SimpleIAM.PasswordlessLogin;
 using SimpleIAM.PasswordlessLogin.Stores;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace SimpleIAM.PasswordlessLogin.Services
+namespace SimpleIAM.OpenIdAuthority.Services
 {
     public class ProfileService : IProfileService
     {

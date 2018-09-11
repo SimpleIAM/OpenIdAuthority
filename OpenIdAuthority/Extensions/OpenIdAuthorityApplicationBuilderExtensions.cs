@@ -85,7 +85,7 @@ namespace Microsoft.AspNetCore.Builder
                 app.UseMiddleware<SimpleIAM.OpenIdAuthority.Extensions.CspHeaderOverridesMiddleware>();
             }
 
-            app.UsePasswordlessLogin(env.WebRootFileProvider);
+            app.UsePasswordlessLoginWithoutAuthentication(env.WebRootFileProvider);
 
             app.UseIdentityServer();
 

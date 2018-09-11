@@ -156,7 +156,7 @@ namespace SimpleIAM.OpenIdAuthority.UI.Authenticate
             var email = User.GetDisplayName();
 
             var oneTimeCodeResponse = await _oneTimeCodeService.GetOneTimeCodeAsync(email, 
-                TimeSpan.FromMinutes(OpenIdAuthorityConstants.OneTimeCode.DefaultValidityMinutes));
+                TimeSpan.FromMinutes(PasswordlessLoginConstants.OneTimeCode.DefaultValidityMinutes));
             switch (oneTimeCodeResponse.Result)
             {
                 case GetOneTimeCodeResult.Success:

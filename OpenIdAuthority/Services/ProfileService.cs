@@ -4,7 +4,6 @@
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.Extensions.Logging;
-using SimpleIAM.OpenIdAuthority;
 using SimpleIAM.PasswordlessLogin;
 using SimpleIAM.PasswordlessLogin.Stores;
 using System.Linq;

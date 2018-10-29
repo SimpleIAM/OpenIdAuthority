@@ -89,8 +89,6 @@ namespace Microsoft.AspNetCore.Builder
 
             app.UseIdentityServer();
 
-            app.UseMvc();
-
             return app;
         }
     }

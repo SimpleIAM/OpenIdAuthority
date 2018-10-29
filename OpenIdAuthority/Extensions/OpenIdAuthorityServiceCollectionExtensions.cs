@@ -4,8 +4,6 @@
 using IdentityServer4.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
@@ -75,8 +73,6 @@ namespace Microsoft.Extensions.DependencyInjection
             var passwordlessApiAllowedOrigins = clients.SelectMany(x => x.AllowedCorsOrigins).Distinct().ToArray();
             services.AddPasswordlessLogin(configuration, env, passwordlessApiAllowedOrigins);
 
-            services.AddEmbeddedViews();
-
             services.AddIdentityServer(options =>
             {
                 options.UserInteraction.LoginUrl = idProviderConfig.Urls.SignIn;
@@ -92,10 +88,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddInMemoryIdentityResources(idScopes);
 
             services.AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, ReconfigureCookieOptions>();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            services.TryAddSingleton<ITempDataProvider, CookieTempDataProvider>();
 
             return services;
         }

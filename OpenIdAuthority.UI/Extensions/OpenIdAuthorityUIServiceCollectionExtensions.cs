@@ -2,24 +2,26 @@
 // Licensed under the Apache License, Version 2.0.
 
 using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
+using SimpleIAM.OpenIdAuthority.UI;
 using System.Reflection;
 
-namespace SimpleIAM.OpenIdAuthority
+namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class EmbeddedViewExtensionMethods
+    public static class OpenIdAuthorityUIServiceCollectionExtensions
     {
         /// <summary>
         /// Adds ability to use views embedded in packages. Add before calling services.UseMvc().
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddEmbeddedViews(this IServiceCollection services)
+        public static IServiceCollection AddOpenIdAuthorityUI(this IServiceCollection services)
         {
-            var assembly = typeof(EmbeddedViewExtensionMethods).GetTypeInfo().Assembly;
+            var assembly = typeof(OpenIdAuthorityUIServiceCollectionExtensions).GetTypeInfo().Assembly;
 
-            var embeddedFileProvider = new EmbeddedFileProvider(assembly, "SimpleIAM.OpenIdAuthority.UI");
+            var embeddedFileProvider = new EmbeddedFileProvider(assembly, "SimpleIAM.OpenIdAuthority.UI.UI");
 
             services.Configure<RazorViewEngineOptions>(options =>
             {
@@ -27,6 +29,9 @@ namespace SimpleIAM.OpenIdAuthority
                 options.ViewLocationExpanders.Add(new EmbeddedViewLocator());
             }
             );
+
+            services.TryAddSingleton<ITempDataProvider, CookieTempDataProvider>();
+
             return services;
         }
     }

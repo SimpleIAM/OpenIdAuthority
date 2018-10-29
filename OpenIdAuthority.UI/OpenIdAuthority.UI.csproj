@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>SimpleIAM.OpenIdAuthority.UI</AssemblyName>
+    <RootNamespace>SimpleIAM.OpenIdAuthority.UI</RootNamespace>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="UI\Account\GetOneTimeCode.cshtml" />
+    <None Remove="UI\Account\MyAccount.cshtml" />
+    <None Remove="UI\Account\RemovePassword.cshtml" />
+    <None Remove="UI\Account\SetPassword.cshtml" />
+    <None Remove="UI\Authenticate\ForgotPassword.cshtml" />
+    <None Remove="UI\Authenticate\Register.cshtml" />
+    <None Remove="UI\Authenticate\SignedOut.cshtml" />
+    <None Remove="UI\Authenticate\SignIn.cshtml" />
+    <None Remove="UI\Home\Apps.cshtml" />
+    <None Remove="UI\Home\Error.cshtml" />
+    <None Remove="UI\Home\Index.cshtml" />
+    <None Remove="UI\Home\Privacy.cshtml" />
+    <None Remove="UI\Home\Terms.cshtml" />
+    <None Remove="UI\Shared\_Layout.cshtml" />
+    <None Remove="UI\Shared\_MainMenu.cshtml" />
+    <None Remove="UI\Shared\_PostRedirectMessages.cshtml" />
+    <None Remove="UI\Shared\_SignInFallback.cshtml" />
+    <None Remove="UI\_ViewImports.cshtml" />
+    <None Remove="UI\_ViewStart.cshtml" />
+    <None Remove="wwwroot\applogo.png" />
+    <None Remove="wwwroot\setpassword.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="UI\Account\GetOneTimeCode.cshtml" />
+    <EmbeddedResource Include="UI\Account\MyAccount.cshtml" />
+    <EmbeddedResource Include="UI\Account\RemovePassword.cshtml" />
+    <EmbeddedResource Include="UI\Account\SetPassword.cshtml" />
+    <EmbeddedResource Include="UI\Authenticate\ForgotPassword.cshtml" />
+    <EmbeddedResource Include="UI\Authenticate\Register.cshtml" />
+    <EmbeddedResource Include="UI\Authenticate\SignedOut.cshtml" />
+    <EmbeddedResource Include="UI\Authenticate\SignIn.cshtml" />
+    <EmbeddedResource Include="UI\Home\Apps.cshtml" />
+    <EmbeddedResource Include="UI\Home\Error.cshtml" />
+    <EmbeddedResource Include="UI\Home\Index.cshtml" />
+    <EmbeddedResource Include="UI\Home\Privacy.cshtml" />
+    <EmbeddedResource Include="UI\Home\Terms.cshtml" />
+    <EmbeddedResource Include="UI\Shared\_Layout.cshtml" />
+    <EmbeddedResource Include="UI\Shared\_MainMenu.cshtml" />
+    <EmbeddedResource Include="UI\Shared\_PostRedirectMessages.cshtml" />
+    <EmbeddedResource Include="UI\Shared\_SignInFallback.cshtml" />
+    <EmbeddedResource Include="UI\_ViewImports.cshtml" />
+    <EmbeddedResource Include="UI\_ViewStart.cshtml" />
+    <EmbeddedResource Include="wwwroot\applogo.png" />
+    <EmbeddedResource Include="wwwroot\setpassword.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenIdAuthority\OpenIdAuthority.csproj" />
+  </ItemGroup>
+
+</Project>

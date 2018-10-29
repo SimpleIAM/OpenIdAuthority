@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SimpleIAM.OpenIdAuthority
+namespace SimpleIAM.OpenIdAuthority.UI
 {
     public class EmbeddedViewLocator : IViewLocationExpander
     {

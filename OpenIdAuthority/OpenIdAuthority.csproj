@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>SimpleIAM.OpenIdAuthority</PackageId>
-    <Version>0.3.0-beta1</Version>
+    <Version>0.3.1</Version>
     <Authors>Ryan Foster</Authors>
     <Company>SimpleIAM.com</Company>
     <Title>OpenID Authority</Title>
@@ -19,12 +19,10 @@
   <ItemGroup>
     <Compile Remove="node_modules\**" />
     <Content Remove="**\*.cshtml" />
-    <Content Remove="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="**\*.cshtml" />
-    <EmbeddedResource Include="wwwroot\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,17 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="UI\Account\GetOneTimeCode.cshtml" />
-    <None Remove="UI\Account\RemovePassword.cshtml" />
-    <None Remove="UI\Account\SetPassword.cshtml" />
-    <None Remove="UI\Authenticate\AccountSettings.cshtml" />
-    <None Remove="UI\Authenticate\Register.cshtml" />
-    <None Remove="UI\Home\Apps.cshtml" />
-    <None Remove="UI\Shared\_MainMenu.cshtml" />
-    <None Remove="UI\Shared\_PostRedirectMessages.cshtml" />
-    <None Remove="UI\Shared\_SignInFallback.cshtml" />
-    <None Remove="UI\_ViewStart.cshtml" />
-    <None Remove="wwwroot\setpassword.js" />
     <None Remove="yarn.lock" />
   </ItemGroup>
 
@@ -53,10 +40,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.HttpOverrides" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.1.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" PrivateAssets="All" />
     <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="2.0.0" />
     <PackageReference Include="SimpleIAM.PasswordlessLogin" Version="0.3.1" />
   </ItemGroup>

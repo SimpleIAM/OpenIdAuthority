@@ -46,6 +46,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton(hostingConfig);
 
             var appConfigs = configuration.GetSection(OpenIdAuthorityConstants.ConfigurationSections.Apps).Get<List<AppConfig>>() ?? new List<AppConfig>();
+            var appService = new DefaultApplicationService(appConfigs);
+            services.TryAddSingleton<IApplicationService>(appService);
+
             var clients = AppConfigHelper.GetClientsFromAppConfig(appConfigs);
             var apps = AppConfigHelper.GetAppsFromClients(clients);
             var appStore = new InMemoryAppStore(apps);

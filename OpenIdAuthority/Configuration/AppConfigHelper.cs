@@ -31,7 +31,6 @@ namespace SimpleIAM.OpenIdAuthority.Configuration
                 ClientName = config.Name,
                 ClientUri = baseUrl,
                 ClientSecrets = config.Secrets?.Select(x => new Secret(x.Sha256())).ToList() ?? new List<Secret>(),
-                AllowedGrantTypes = config.AppType == AppType.ClientSideWebApp ? new string[] { "implicit" } : new string[] { "authorization_code" },
                 RedirectUris = config.RedirectUris != null ? config.RedirectUris.Split('\n') : new string[] { baseUrl, $"{baseUrl}/signin-oidc" },
                 FrontChannelLogoutUri = config.FrontChannelLogoutUri ?? $"{baseUrl}/signout-oidc",
                 PostLogoutRedirectUris = config.PostLogoutRedirectUris != null ? config.PostLogoutRedirectUris.Split('\n') : new string[] { baseUrl, $"{baseUrl}/", $"{baseUrl}/signout-callback-oidc" },
@@ -55,6 +54,9 @@ namespace SimpleIAM.OpenIdAuthority.Configuration
                     break;
                 case AppType.BackendService:
                     client.AllowedGrantTypes = new string[] { "client_credentials" };
+                    break;
+                case AppType.InsecureLegacy:
+                    client.AllowedGrantTypes = new string[] { "password" };
                     break;
                 case AppType.ServerSideWebApp:
                 default:

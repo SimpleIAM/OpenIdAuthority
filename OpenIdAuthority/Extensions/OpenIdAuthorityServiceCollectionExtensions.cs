@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 using IdentityServer4.Models;
+using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -72,6 +73,8 @@ namespace Microsoft.Extensions.DependencyInjection
             }).ToList();
 
             services.TryAddTransient<ISignInService, OpenIdAuthoritySignInService>();
+            services.TryAddTransient<SimpleIAM.PasswordlessLogin.Services.Password.IReadOnlyPasswordService, SimpleIAM.PasswordlessLogin.Services.Password.DefaultPasswordService>();
+            services.TryAddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
 
             var passwordlessApiAllowedOrigins = clients.SelectMany(x => x.AllowedCorsOrigins).Distinct().ToArray();
             services.AddPasswordlessLogin(configuration, env, passwordlessApiAllowedOrigins);

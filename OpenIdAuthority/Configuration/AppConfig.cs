@@ -10,7 +10,8 @@ namespace SimpleIAM.OpenIdAuthority.Configuration
         ServerSideWebApp,
         ClientSideWebApp,
         NativeApp,
-        BackendService
+        BackendService,
+        InsecureLegacy
     }
 
     public class AppConfig

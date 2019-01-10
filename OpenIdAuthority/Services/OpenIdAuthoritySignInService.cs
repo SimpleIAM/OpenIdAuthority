@@ -23,8 +23,9 @@ namespace SimpleIAM.OpenIdAuthority.Services
             _events = events;
         }
 
-        public async Task SignInAsync(string subjectId, string username, AuthenticationProperties authProps)
+        public async Task SignInAsync(string subjectId, string username, AuthenticationProperties authProps, string authMethodReference, bool fromTrustedBrowser)
         {
+            //TODO: figure out how to handle authMethodReference and fromTrustedBrowser
             await _events.RaiseAsync(new UserLoginSuccessEvent(username, subjectId, username));
 
             await _httpContext.SignInAsync(subjectId, username, authProps);

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>SimpleIAM.OpenIdAuthority</PackageId>
-    <Version>0.4.0-beta3</Version>
+    <Version>0.4.0-beta4</Version>
     <Authors>Ryan Foster</Authors>
     <Company>SimpleIAM.com</Company>
     <Title>OpenID Authority</Title>
@@ -42,7 +42,7 @@
     <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
     <PackageReference Include="NWebsec.AspNetCore.Middleware" Version="2.0.0" />
     <PackageReference Include="SecurityCodeScan" Version="3.0.0" />
-    <PackageReference Include="SimpleIAM.PasswordlessLogin" Version="0.4.0-beta3" />
+    <PackageReference Include="SimpleIAM.PasswordlessLogin" Version="0.4.0-beta4" />
   </ItemGroup>
 
   <ItemGroup>

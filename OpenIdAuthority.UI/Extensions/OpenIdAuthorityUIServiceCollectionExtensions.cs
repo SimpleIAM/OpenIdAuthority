@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class OpenIdAuthorityUIServiceCollectionExtensions
     {
         /// <summary>
-        /// Adds ability to use views embedded in packages. Add before calling services.UseMvc().
+        /// Adds ability to use views embedded in packages. Add before calling services.UseMvc() or services.UseEndpoints().
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
@@ -23,12 +23,13 @@ namespace Microsoft.Extensions.DependencyInjection
 
             var embeddedFileProvider = new EmbeddedFileProvider(assembly, "SimpleIAM.OpenIdAuthority.UI.UI");
 
+            services.AddControllersWithViews()
+                .AddRazorRuntimeCompilation(options => options.FileProviders.Add(embeddedFileProvider));
+
             services.Configure<RazorViewEngineOptions>(options =>
             {
-                options.FileProviders.Add(embeddedFileProvider);
                 options.ViewLocationExpanders.Add(new EmbeddedViewLocator());
-            }
-            );
+            });
 
             services.TryAddSingleton<ITempDataProvider, CookieTempDataProvider>();
 

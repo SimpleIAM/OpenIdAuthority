@@ -23,7 +23,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class OpenIdAuthorityServiceCollectionExtensions
     {
-        public static IServiceCollection AddOpenIdAuthority(this IServiceCollection services, IConfiguration configuration, IHostingEnvironment env)
+        public static IServiceCollection AddOpenIdAuthority(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
         {
             if (services == null)
             {
@@ -46,7 +46,7 @@ namespace Microsoft.Extensions.DependencyInjection
             configuration.Bind(OpenIdAuthorityConstants.ConfigurationSections.Hosting, hostingConfig);
             services.AddSingleton(hostingConfig);
 
-            var appConfigs = configuration.GetSection(OpenIdAuthorityConstants.ConfigurationSections.Apps).Get<List<AppConfig>>() ?? new List<AppConfig>();
+            var appConfigs = configuration.GetAppConfigs();
             var appService = new DefaultApplicationService(appConfigs);
             services.TryAddSingleton<IApplicationService>(appService);
 
@@ -76,8 +76,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddTransient<SimpleIAM.PasswordlessLogin.Services.Password.IReadOnlyPasswordService, SimpleIAM.PasswordlessLogin.Services.Password.DefaultPasswordService>();
             services.TryAddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
 
-            var passwordlessApiAllowedOrigins = clients.SelectMany(x => x.AllowedCorsOrigins).Distinct().ToArray();
-            services.AddPasswordlessLogin(configuration, env, passwordlessApiAllowedOrigins);
+            services.AddPasswordlessLogin(configuration, env);
 
             services.AddIdentityServer(options =>
             {

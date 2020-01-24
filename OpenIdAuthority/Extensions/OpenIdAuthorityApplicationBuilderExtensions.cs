@@ -6,12 +6,13 @@ using System;
 using Microsoft.AspNetCore.HttpOverrides;
 using SimpleIAM.OpenIdAuthority.Configuration;
 using System.Linq;
+using Microsoft.Extensions.Hosting;
 
 namespace Microsoft.AspNetCore.Builder
 {
     public static class OpenIdAuthorityApplicationBuilderExtensions
     {
-        public static IApplicationBuilder UseOpenIdAuthority(this IApplicationBuilder app, IHostingEnvironment env, HostingConfig hostingConfig)
+        public static IApplicationBuilder UseOpenIdAuthority(this IApplicationBuilder app, IWebHostEnvironment env, HostingConfig hostingConfig)
         {
             if (app == null)
             {
@@ -94,8 +95,6 @@ namespace Microsoft.AspNetCore.Builder
                 );
                 app.UseMiddleware<SimpleIAM.OpenIdAuthority.Extensions.CspHeaderOverridesMiddleware>();
             }
-
-            app.UsePasswordlessLoginWithoutAuthentication(env.WebRootFileProvider);
 
             app.UseIdentityServer();
 

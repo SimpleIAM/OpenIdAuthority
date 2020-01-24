@@ -9,6 +9,7 @@ using SimpleIAM.OpenIdAuthority.UI.Account;
 using SimpleIAM.OpenIdAuthority.UI.Shared;
 using SimpleIAM.PasswordlessLogin.Configuration;
 using SimpleIAM.PasswordlessLogin;
+using System.Net;
 
 namespace SimpleIAM.OpenIdAuthority.UI.Authenticate
 {
@@ -52,23 +53,24 @@ namespace SimpleIAM.OpenIdAuthority.UI.Authenticate
             }
             var sub = User.GetSubjectId();
 
-            var result = await _passwordService.SetPasswordAsync(sub, model.NewPassword);
-            switch (result)
+            var status = await _passwordService.SetPasswordAsync(sub, model.NewPassword);
+            if(status.IsOk)
             {
-                case SetPasswordResult.Success:
-                    AddPostRedirectMessage("Password successfully set");
-                    
-                    if(model.NextUrl != null && (Url.IsLocalUrl(model.NextUrl) || true /*todo: validate that is is a url for a registered client?*/))
-                    {
-                        return Redirect(model.NextUrl);
-                    }
-                    return RedirectToAction(nameof(MyAccount));
-                case SetPasswordResult.PasswordDoesNotMeetStrengthRequirements:
-                    ModelState.AddModelError("NewPassword", "Password does not meet minimum password strength requirements (try something longer).");
-                    break;
-                case SetPasswordResult.ServiceFailure:
-                    ModelState.AddModelError("NewPassword", "Something went wrong.");
-                    break;
+                AddPostRedirectMessage("Password successfully set");
+
+                if (model.NextUrl != null && (Url.IsLocalUrl(model.NextUrl) || true /*todo: validate that is is a url for a registered client?*/))
+                {
+                    return Redirect(model.NextUrl);
+                }
+                return RedirectToAction(nameof(MyAccount));
+
+            }
+            if (status.PasswordDoesNotMeetStrengthRequirements) {
+                ModelState.AddModelError("NewPassword", "Password does not meet minimum password strength requirements (try something longer).");
+            }
+            else
+            {
+                ModelState.AddModelError("NewPassword", "Something went wrong.");
             }
 
             var viewModel = GetSetPasswordViewModel(model);

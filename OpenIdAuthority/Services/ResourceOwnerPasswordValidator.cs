@@ -30,11 +30,12 @@ namespace SimpleIAM.OpenIdAuthority.Services
             _logger.LogDebug("Validating resource owner password for: {0}", context.UserName);
             var validated = false;
 
-            var user = await _userStore.GetUserByEmailAsync(context.UserName);
-            if (user != null)
+            var userResponse = await _userStore.GetUserByUsernameAsync(context.UserName);
+            if (userResponse.IsOk)
             {
-                var result = await _passwordService.CheckPasswordAsync(user.SubjectId, context.Password);
-                if (result == CheckPasswordResult.Success)
+                var user = userResponse.Result;
+                var response = await _passwordService.CheckPasswordAsync(user.SubjectId, context.Password);
+                if (response.IsOk)
                 {
                     _logger.LogDebug("Resource owner password for {0} succeeded", context.UserName);
                     validated = true;

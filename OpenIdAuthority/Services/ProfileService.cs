@@ -30,10 +30,11 @@ namespace SimpleIAM.OpenIdAuthority.Services
             var sub = context.Subject.GetSubjectId();
             if(context.RequestedClaimTypes.Any())
             {
-                var user = await _userStore.GetUserAsync(sub, true);
+                var userResponse = await _userStore.GetUserAsync(sub, true);
 
-                if (user != null)
+                if (userResponse.IsOk)
                 {
+                    var user = userResponse.Result;
                     var claims = user.Claims.Select(x => new Claim(x.Type, x.Value)).ToList();
                     claims.Add(new Claim(OpenIdAuthorityConstants.StandardClaims.Email, user.Email));
                     claims.Add(new Claim(OpenIdAuthorityConstants.StandardClaims.EmailVerified, "true"));

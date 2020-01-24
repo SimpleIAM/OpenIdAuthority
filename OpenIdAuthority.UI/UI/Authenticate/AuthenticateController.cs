@@ -61,8 +61,8 @@ namespace SimpleIAM.OpenIdAuthority.UI.Authenticate
                 }
                 else
                 {
-                    var response = await _authenticateOrchestrator.RegisterAsync(model);
-                    ViewBag.Message = response.Message;
+                    var status = await _authenticateOrchestrator.RegisterAsync(model);
+                    ViewBag.Message = status.Text;
                 }
             }
             return View(model);
@@ -83,8 +83,8 @@ namespace SimpleIAM.OpenIdAuthority.UI.Authenticate
             }
             else if (ModelState.IsValid)
             {
-                var response = await _authenticateOrchestrator.SendPasswordResetMessageAsync(model);
-                ViewBag.Message = response.Message;
+                var status = await _authenticateOrchestrator.SendPasswordResetMessageAsync(model);
+                ViewBag.Message = status.Text;
             }
             return View(model);
         }
@@ -120,17 +120,17 @@ namespace SimpleIAM.OpenIdAuthority.UI.Authenticate
                     Username = model.Username,
                     NextUrl = model.NextUrl
                 };
-                var response = await _authenticateOrchestrator.SendOneTimeCodeAsync(input);
-                ViewBag.Message = response.Message;
+                var status = await _authenticateOrchestrator.SendOneTimeCodeAsync(input);
+                ViewBag.Message = status.Text;
             }
             else if (ModelState.IsValid)
             {
-                var response = await _authenticateOrchestrator.AuthenticateAsync(model);
-                if (response.StatusCode == HttpStatusCode.Redirect)
+                var status = await _authenticateOrchestrator.AuthenticateAsync(model);
+                if (status.StatusCode == HttpStatusCode.Redirect)
                 {
-                    return Redirect(response.RedirectUrl);
+                    return Redirect(status.RedirectUrl);
                 }
-                ViewBag.Message = response.Message;
+                ViewBag.Message = status.Text;
             }
             return View(model);
         }
@@ -138,15 +138,15 @@ namespace SimpleIAM.OpenIdAuthority.UI.Authenticate
         [HttpGet("signin/{longCode}")]
         public async Task<ActionResult> SignInLink(string longCode)
         {
-            var response = await _authenticateOrchestrator.AuthenticateLongCodeAsync(longCode);
-            switch (response.StatusCode)
+            var status = await _authenticateOrchestrator.AuthenticateLongCodeAsync(longCode);
+            switch (status.StatusCode)
             {
                 case HttpStatusCode.Redirect:
-                    return Redirect(response.RedirectUrl);
+                    return Redirect(status.RedirectUrl);
                 case HttpStatusCode.NotFound:
                     return NotFound();
                 default:
-                    AddPostRedirectMessage(response.Message);
+                    AddPostRedirectMessage(status.Text);
                     return RedirectToAction(nameof(SignIn));
             }
         }

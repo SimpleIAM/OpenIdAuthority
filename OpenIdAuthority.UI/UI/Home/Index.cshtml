@@ -1,9 +1,9 @@
 ﻿@using SimpleIAM.PasswordlessLogin.Configuration
-@inject IdProviderConfig config
+@inject PasswordlessLoginOptions options
 @{
-    ViewData["Title"] = config.DisplayName;
+    ViewData["Title"] = options.DisplayName;
 }
 
-<h2>@config.DisplayName</h2>
+<h2>@options.DisplayName</h2>
 
 <p>About your company</p>

@@ -4,14 +4,12 @@
 using IdentityServer4.Models;
 using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using SimpleIAM.OpenIdAuthority;
 using SimpleIAM.OpenIdAuthority.Configuration;
 using SimpleIAM.OpenIdAuthority.Services;
-using SimpleIAM.PasswordlessLogin;
 using SimpleIAM.PasswordlessLogin.Configuration;
 using SimpleIAM.PasswordlessLogin.Services;
 using SimpleIAM.PasswordlessLogin.Stores;
@@ -21,39 +19,31 @@ using System.Linq;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class OpenIdAuthorityServiceCollectionExtensions
+    public static class PasswordlessLoginBuilderExtensionsOpenIdAuthority
     {
-        public static IServiceCollection AddOpenIdAuthority(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment env)
+        public static PasswordlessLoginBuilder AddOpenIdAuthority(this PasswordlessLoginBuilder builder, IConfiguration configuration)
         {
-            if (services == null)
+            if (builder == null)
             {
-                throw new ArgumentNullException(nameof(services));
+                throw new ArgumentNullException(nameof(builder));
             }
             if (configuration == null)
             {
                 throw new ArgumentNullException(nameof(configuration));
             }
-            if (env == null)
-            {
-                throw new ArgumentNullException(nameof(env));
-            }
-
-            var idProviderConfig = new IdProviderConfig();
-            configuration.Bind(PasswordlessLoginConstants.ConfigurationSections.IdProvider, idProviderConfig);
-            services.AddSingleton(idProviderConfig);
 
             var hostingConfig = new HostingConfig();
             configuration.Bind(OpenIdAuthorityConstants.ConfigurationSections.Hosting, hostingConfig);
-            services.AddSingleton(hostingConfig);
+            builder.Services.AddSingleton(hostingConfig);
 
             var appConfigs = configuration.GetAppConfigs();
             var appService = new DefaultApplicationService(appConfigs);
-            services.TryAddSingleton<IApplicationService>(appService);
+            builder.Services.TryAddSingleton<IApplicationService>(appService);
 
             var clients = AppConfigHelper.GetClientsFromAppConfig(appConfigs);
             var apps = AppConfigHelper.GetAppsFromClients(clients);
             var appStore = new InMemoryAppStore(apps);
-            services.TryAddSingleton<IAppStore>(appStore);
+            builder.Services.TryAddSingleton<IAppStore>(appStore);
 
             var idScopeConfig = configuration.GetSection(OpenIdAuthorityConstants.ConfigurationSections.IdScopes).Get<List<IdScopeConfig>>() ?? new List<IdScopeConfig>();
             var idScopes = idScopeConfig.Select(x => new IdentityResource(x.Name, x.IncludeClaimTypes) { Required = x.Required }).ToList();
@@ -72,19 +62,17 @@ namespace Microsoft.Extensions.DependencyInjection
                 Scopes = x.Scopes?.ToList()?.Select(y => new Scope(y)).ToList()
             }).ToList();
 
-            services.TryAddTransient<ISignInService, OpenIdAuthoritySignInService>();
-            services.TryAddTransient<SimpleIAM.PasswordlessLogin.Services.Password.IReadOnlyPasswordService, SimpleIAM.PasswordlessLogin.Services.Password.DefaultPasswordService>();
-            services.TryAddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
+            builder.Services.AddTransient<ISignInService, OpenIdAuthoritySignInService>(); // NOTE: This must replace the service registered by PasswordlessLogin
+            builder.Services.TryAddTransient<SimpleIAM.PasswordlessLogin.Services.Password.IReadOnlyPasswordService, SimpleIAM.PasswordlessLogin.Services.Password.DefaultPasswordService>();
+            builder.Services.TryAddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
 
-            services.AddPasswordlessLogin(configuration, env);
-
-            services.AddIdentityServer(options =>
+            builder.Services.AddIdentityServer(options =>
             {
-                options.UserInteraction.LoginUrl = idProviderConfig.Urls.SignIn;
-                options.UserInteraction.LogoutUrl = idProviderConfig.Urls.SignOut;
+                options.UserInteraction.LoginUrl = builder.Options.Urls.SignIn;
+                options.UserInteraction.LogoutUrl = builder.Options.Urls.SignOut;
                 options.UserInteraction.LogoutIdParameter = OpenIdAuthorityConstants.Configuration.LogoutIdParameter;
-                options.UserInteraction.ErrorUrl = idProviderConfig.Urls.Error;
-                options.Authentication.CookieLifetime = TimeSpan.FromMinutes(idProviderConfig.DefaultSessionLengthMinutes);
+                options.UserInteraction.ErrorUrl = builder.Options.Urls.Error;
+                options.Authentication.CookieLifetime = TimeSpan.FromMinutes(builder.Options.DefaultSessionLengthMinutes);
             })
                 .AddDeveloperSigningCredential() //todo: replace
                 .AddInMemoryApiResources(apiResources)
@@ -92,9 +80,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddProfileService<ProfileService>()                
                 .AddInMemoryIdentityResources(idScopes);
 
-            services.AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, ReconfigureCookieOptions>();
+            builder.Services.AddSingleton<IConfigureOptions<CookieAuthenticationOptions>, ReconfigureCookieOptions>();
 
-            return services;
+            return builder;
         }
     }
 }

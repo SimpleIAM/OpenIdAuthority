@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Ryan Foster. All rights reserved. 
 // Licensed under the Apache License, Version 2.0.
 
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityServer4.Events;
@@ -23,12 +24,11 @@ namespace SimpleIAM.OpenIdAuthority.Services
             _events = events;
         }
 
-        public async Task SignInAsync(string subjectId, string username, AuthenticationProperties authProps, string authMethodReference, bool fromTrustedBrowser)
+        public async Task SignInAsync(string subjectId, string username, IEnumerable<string> authenticationMethods, AuthenticationProperties properties, params Claim[] claims)
         {
-            //TODO: figure out how to handle authMethodReference and fromTrustedBrowser
             await _events.RaiseAsync(new UserLoginSuccessEvent(username, subjectId, username));
 
-            await _httpContext.SignInAsync(subjectId, username, authProps);
+            await _httpContext.SignInAsync(subjectId, username, authenticationMethods, properties, claims);
         }
 
         public async Task SignOutAsync()

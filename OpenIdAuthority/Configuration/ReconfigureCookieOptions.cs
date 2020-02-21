@@ -10,10 +10,10 @@ namespace SimpleIAM.OpenIdAuthority.Configuration
 {
     internal class ReconfigureCookieOptions : IConfigureNamedOptions<CookieAuthenticationOptions>
     {
-        private readonly IdProviderConfig _idProviderConfig;
-        public ReconfigureCookieOptions(IdProviderConfig idProviderConfig)
+        private readonly PasswordlessLoginOptions _passwordlessLoginOptions;
+        public ReconfigureCookieOptions(PasswordlessLoginOptions idProviderConfig)
         {
-            _idProviderConfig = idProviderConfig;
+            _passwordlessLoginOptions = idProviderConfig;
         }
 
         public void Configure(CookieAuthenticationOptions options)
@@ -22,7 +22,7 @@ namespace SimpleIAM.OpenIdAuthority.Configuration
 
         public void Configure(string name, CookieAuthenticationOptions options)
         {
-            options.ConfigurePasswordlessAuthenticationOptions(_idProviderConfig.Urls);
+            options.ConfigurePasswordlessAuthenticationOptions(_passwordlessLoginOptions.Urls);
         }
     }
 }

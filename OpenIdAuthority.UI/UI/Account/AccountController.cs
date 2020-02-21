@@ -18,15 +18,15 @@ namespace SimpleIAM.OpenIdAuthority.UI.Authenticate
     public class AccountController : BaseController
     {
         private readonly IPasswordService _passwordService;
-        private readonly IdProviderConfig _config;
+        private readonly PasswordlessLoginOptions _options;
 
         public AccountController(
             IPasswordService passwordService,
-            IdProviderConfig config
+            PasswordlessLoginOptions options
             )
         {
             _passwordService = passwordService;
-            _config = config;
+            _options = options;
         }
 
         [HttpGet("")]
@@ -80,7 +80,7 @@ namespace SimpleIAM.OpenIdAuthority.UI.Authenticate
         private SetPasswordModel GetSetPasswordViewModel(SetPasswordModel inputModel = null, string nextUrl = null)
         {
             var viewModel = new SetPasswordModel() {
-                MinimumPasswordStrengthInBits = _config.MinimumPasswordStrengthInBits,
+                MinimumPasswordStrengthInBits = _options.MinimumPasswordStrengthInBits,
                 OneTimeCode = inputModel?.OneTimeCode,
                 NextUrl = inputModel?.NextUrl ?? nextUrl
             };

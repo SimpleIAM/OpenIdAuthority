@@ -1,8 +1,8 @@
-﻿@inject SimpleIAM.PasswordlessLogin.Configuration.IdProviderConfig config
+﻿@inject SimpleIAM.PasswordlessLogin.Configuration.PasswordlessLoginOptions options
 
 <nav class="mainNav">
     <h1 class="mainNav_siteName">
-        <a class="mainNav_siteNameLink" asp-action="Index" asp-controller="Home">@config.DisplayName</a>
+        <a class="mainNav_siteNameLink" asp-action="Index" asp-controller="Home">@options.DisplayName</a>
     </h1>
     @if (User.Identity.IsAuthenticated)
     {

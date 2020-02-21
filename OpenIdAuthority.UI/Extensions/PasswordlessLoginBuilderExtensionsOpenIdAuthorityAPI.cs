@@ -6,34 +6,35 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.FileProviders;
 using SimpleIAM.OpenIdAuthority.UI;
+using SimpleIAM.PasswordlessLogin.Configuration;
 using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class OpenIdAuthorityUIServiceCollectionExtensions
+    public static class PasswordlessLoginBuilderExtensionsOpenIdAuthorityAPI
     {
         /// <summary>
         /// Adds ability to use views embedded in packages. Add before calling services.UseMvc() or services.UseEndpoints().
         /// </summary>
         /// <param name="services"></param>
         /// <returns></returns>
-        public static IServiceCollection AddOpenIdAuthorityUI(this IServiceCollection services)
+        public static PasswordlessLoginBuilder AddOpenIdAuthorityUI(this PasswordlessLoginBuilder builder)
         {
-            var assembly = typeof(OpenIdAuthorityUIServiceCollectionExtensions).GetTypeInfo().Assembly;
+            var assembly = typeof(PasswordlessLoginBuilderExtensionsOpenIdAuthorityAPI).GetTypeInfo().Assembly;
 
             var embeddedFileProvider = new EmbeddedFileProvider(assembly, "SimpleIAM.OpenIdAuthority.UI.UI");
 
-            services.AddControllersWithViews()
+            builder.Services.AddControllersWithViews()
                 .AddRazorRuntimeCompilation(options => options.FileProviders.Add(embeddedFileProvider));
 
-            services.Configure<RazorViewEngineOptions>(options =>
+            builder.Services.Configure<RazorViewEngineOptions>(options =>
             {
                 options.ViewLocationExpanders.Add(new EmbeddedViewLocator());
             });
 
-            services.TryAddSingleton<ITempDataProvider, CookieTempDataProvider>();
+            builder.Services.TryAddSingleton<ITempDataProvider, CookieTempDataProvider>();
 
-            return services;
+            return builder;
         }
     }
 }

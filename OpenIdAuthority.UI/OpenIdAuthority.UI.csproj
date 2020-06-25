@@ -5,7 +5,15 @@
     <AssemblyName>SimpleIAM.OpenIdAuthority.UI</AssemblyName>
     <RootNamespace>SimpleIAM.OpenIdAuthority.UI</RootNamespace>
     <Version>0.1.0</Version>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <None Remove="UI\Account\GetOneTimeCode.cshtml" />

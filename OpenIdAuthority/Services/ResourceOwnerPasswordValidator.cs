@@ -34,7 +34,7 @@ namespace SimpleIAM.OpenIdAuthority.Services
             if (userResponse.IsOk)
             {
                 var user = userResponse.Result;
-                var response = await _passwordService.CheckPasswordAsync(user.SubjectId, context.Password);
+                var response = await _passwordService.CheckPasswordAsync(user.SubjectId, context.Password, PasswordLockMode.UntrustedClient);
                 if (response.IsOk)
                 {
                     _logger.LogDebug("Resource owner password for {0} succeeded", context.UserName);

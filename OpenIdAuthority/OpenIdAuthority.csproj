@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <PackageId>SimpleIAM.OpenIdAuthority</PackageId>
-    <Version>0.6.0-beta0</Version>
+    <Version>0.6.1-beta0</Version>
     <Authors>Ryan Foster</Authors>
     <Company>SimpleIAM.com</Company>
     <Title>OpenID Authority</Title>
     <Description>A simple OpenID Connect provider built on top of IdentityServer4</Description>
-    <PackageLicense>https://www.apache.org/licenses/LICENSE-2.0</PackageLicense>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/SimpleIAM/OpenIdAuthority</PackageProjectUrl>
     <Copyright>Copyright (c) Ryan Foster</Copyright>
     <PackageTags>OpenID Connect;IdentityServer4</PackageTags>

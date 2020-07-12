@@ -14,12 +14,8 @@ Key Features
 *   Single sign on (SSO) for all of your systems
 *   Simple registration and sign in (users don't even need a password!)
 *   Advanced threat protection
-*   Simple GDPR compliance (coming soon)
-*   Simple security upgrades (coming soon)
 *   Easy to configure
 *   Open source and extendable
 *   Free for commercial use—no monthly fees!
-
-While OpenID Authority is still in beta, it is rapidly becoming the ideal identity management solution for your small or medium sized business. You should try creating an account at our [prerelease demo](https://id.demos.simpleiam.com/) to see just how easy it is to use.  
 
 Handcrafted by [Ryan Foster](https://openidauthority.com/portfolio/). Build with ASP.NET Core and leveraging IdentityServer4, a certified OpenID Connect provider library.

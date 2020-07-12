@@ -53,8 +53,16 @@ namespace Microsoft.AspNetCore.Builder
                     {
                         s.Self();
                         var scriptSrcs = (hostingConfig.Csp.ScriptSources ?? new string[] { }).ToList();
-                        scriptSrcs.Add("sha256-VuNUSJ59bpCpw62HM2JG/hCyGiqoPN3NqGvNXQPU+rY=");
-                        if(scriptSrcs.Contains("unsafe-eval"))
+                        if (scriptSrcs.Contains("unsafe-inline"))
+                        {
+                            scriptSrcs.Remove("unsafe-inline");
+                            s.UnsafeInline();
+                        }
+                        else
+                        {
+                            scriptSrcs.Add("sha256-VuNUSJ59bpCpw62HM2JG/hCyGiqoPN3NqGvNXQPU+rY=");
+                        }
+                        if (scriptSrcs.Contains("unsafe-eval"))
                         {
                             scriptSrcs.Remove("unsafe-eval");
                             s.UnsafeEval();
@@ -64,7 +72,10 @@ namespace Microsoft.AspNetCore.Builder
                             scriptSrcs.Remove("unsafe-inline");
                             s.UnsafeInline();
                         }
-                        s.CustomSources(scriptSrcs.ToArray());
+                        if (scriptSrcs.Any())
+                        {
+                            s.CustomSources(scriptSrcs.ToArray());
+                        }
                     })
                     .StyleSources(s =>
                     {
